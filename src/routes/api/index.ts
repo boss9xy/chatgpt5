@@ -93,7 +93,7 @@ export async function POST({ request }: APIEvent) {
     const encoder = new TextEncoder()
     const decoder = new TextDecoder()
 
-const response = await callAPI(prompt, apiKey);
+  const response = await callAPI(prompt, apiKey);
   } catch (err: any) {
     return new Response(
       JSON.stringify({
