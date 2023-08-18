@@ -42,7 +42,7 @@ export async function sendTextToAPI(prompt, key) {
   ];
 
   const payload = {
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-3.5-turb',
     messages,
     stream: false,
   };
