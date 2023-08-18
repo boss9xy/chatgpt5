@@ -35,6 +35,36 @@ export const config = {
   ]
 }
 
+export async function sendTextToAPI(prompt, key) {
+
+  // Logic gửi request tới API
+  const url = 'https://api.openai.com/v1/chat';
+
+  const messages = [
+    {role: 'user', content: prompt}
+  ];
+
+  const payload = {
+    model: 'davinci',
+    messages,
+    stream: false,
+  };
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${key}`
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers, 
+    body: JSON.stringify(payload)
+  });
+  
+  return response.text();
+
+}
+
 export async function GET() {
   try {
     const keys = Array.from(new Set(splitKeys(localKey)))
