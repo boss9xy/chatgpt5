@@ -93,67 +93,7 @@ export async function POST({ request }: APIEvent) {
     const encoder = new TextEncoder()
     const decoder = new TextDecoder()
 
-    const rawRes = await fetchWithTimeout(
-      `https://${baseURL}/v1/chat/completions`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`
-        },
-        timeout,
-        method: "POST",
-        body: JSON.stringify({
-          model,
-          messages: messages.map(k => ({ role: k.role, content: k.content })),
-          temperature,
-          stream: true
-        })
-      }
-    ).catch((err: { message: any }) => {
-      return new Response(
-        JSON.stringify({
-          error: {
-            message: err.message
-          }
-        }),
-        { status: 500 }
-      )
-    })
-
-    if (!rawRes.ok) {
-      return new Response(rawRes.body, {
-        status: rawRes.status,
-        statusText: rawRes.statusText
-      })
-    }
-
-    const stream = new ReadableStream({
-      async start(controller) {
-        const streamParser = (event: ParsedEvent | ReconnectInterval) => {
-          if (event.type === "event") {
-            const data = event.data
-            if (data === "[DONE]") {
-              controller.close()
-              return
-            }
-            try {
-              const json = JSON.parse(data)
-              const text = json.choices[0].delta?.content
-              const queue = encoder.encode(text)
-              controller.enqueue(queue)
-            } catch (e) {
-              controller.error(e)
-            }
-          }
-        }
-        const parser = createParser(streamParser)
-        for await (const chunk of rawRes.body as any) {
-          parser.feed(decoder.decode(chunk))
-        }
-      }
-    })
-
-    return new Response(stream)
+const response = await callAPI(prompt, apiKey);
   } catch (err: any) {
     return new Response(
       JSON.stringify({
