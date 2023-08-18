@@ -10,7 +10,7 @@ export const config = {
   /**
    * https://vercel.com/docs/concepts/edge-network/regions#region-list
    * disable hongkong
-   * only for vercer
+   * only for vercel
    */
   regions: [
     "arn1",
