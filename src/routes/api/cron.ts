@@ -42,7 +42,7 @@ export async function sendTextToAPI(prompt, key) {
   ];
 
   const payload = {
-    model: 'davinci',
+    model: 'gpt-3.5-turbo',
     messages,
     stream: false,
   };
